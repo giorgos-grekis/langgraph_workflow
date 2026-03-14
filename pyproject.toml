@@ -1,5 +1,5 @@
 [project]
-name = "langgraph"
+name = "langgraph-project"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -9,5 +9,10 @@ dependencies = [
     "google>=3.0.0",
     "google-genai>=1.66.0",
     "httpx>=0.28.1",
+    "ipython>=9.11.0",
+    "langchain-community>=0.4.1",
+    "langchain-openai>=1.1.11",
+    "langchain-tavily>=0.2.17",
+    "langgraph>=1.0.10",
     "openai>=2.26.0",
 ]
