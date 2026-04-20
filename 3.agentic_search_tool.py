@@ -1,14 +1,14 @@
 # libraries
-from dotenv import load_dotenv
+import json
 import os
-from tavily import TavilyClient
+import re
+
 import requests
 from bs4 import BeautifulSoup
 from ddgs import DDGS
-import re
-import json
+from dotenv import load_dotenv
 from pygments import highlight, lexers, formatters
-
+from tavily import TavilyClient
 
 # load environment variables from .env file
 _ = load_dotenv()
@@ -16,14 +16,12 @@ _ = load_dotenv()
 # connect
 client = TavilyClient(api_key=os.environ.get("TAVILY_API_KEY"))
 
-
 # run search
 result = client.search("What is in Nvidia's new Blackwell GPU?",
                        include_answer=True)
 
 # print the answer
 print(result["answer"])
-
 
 # choose location (try to change to your own city!)
 
@@ -35,8 +33,8 @@ query = f"""
     "weather.com"
 """
 
-
 ddg = DDGS()
+
 
 def search(query, max_results=6):
     try:
@@ -44,11 +42,12 @@ def search(query, max_results=6):
         return [i["href"] for i in results]
     except Exception as e:
         print(f"returning previous results due to exception reaching ddg.")
-        results = [ # cover case where DDG rate limits due to high deeplearning.ai volume
+        results = [  # cover case where DDG rate limits due to high deeplearning.ai volume
             "https://weather.com/weather/today/l/USCA0987:1:US",
             "https://weather.com/weather/hourbyhour/l/54f9d8baac32496f6b5497b4bf7a277c3e2e6cc5625de69680e6169e7e38e9a8",
         ]
         return results
+
 
 for i in search(query):
     print(i)
@@ -77,7 +76,7 @@ url = search(query)[0]
 soup = scrape_weather_info(url)
 
 print(f"Website: {url}\n\n")
-print(str(soup.body)[:50000]) # limit long outputs
+print(str(soup.body)[:50000])  # limit long outputs
 
 # extract text
 weather_data = []
@@ -93,7 +92,6 @@ weather_data = re.sub(r'\s+', ' ', weather_data)
 
 print(f"Website: {url}\n\n")
 print(weather_data)
-
 
 # run search
 result = client.search(query, max_results=1)
